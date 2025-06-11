@@ -495,6 +495,45 @@ function App() {
           </div>
         </div>
       )}
+       <div className="custom-header-bg">
+        <div className="custom-header-content">
+          <div className="custom-header-toprow">
+            {user && (
+              <div className="custom-user-bar">
+                <div className="custom-user-avatar">
+                  {(user.name && user.name[0].toUpperCase()) ||
+                    (user.email && user.email[0].toUpperCase()) ||
+                    "U"}
+                </div>
+                <div className="custom-user-info">
+                  <div className="custom-user-name">
+                    {user.name || user.email.split("@")[0]}
+                  </div>
+                  <div className="custom-user-email">{user.email}</div>
+                </div>
+                <button className="custom-logout-btn" onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+          <div className="custom-header-main">
+            <span className="custom-logo-svg">
+              <svg width="56" height="56" fill="none" viewBox="0 0 48 48">
+                <rect width="20" height="20" x="4" y="4" fill="#fff" stroke="#0ac" strokeWidth="2.5" rx="4" />
+                <rect width="20" height="20" x="24" y="4" fill="#fff" stroke="#0ac" strokeWidth="2.5" rx="4" />
+                <rect width="20" height="20" x="4" y="24" fill="#fff" stroke="#0ac" strokeWidth="2.5" rx="4" />
+                <rect width="20" height="20" x="24" y="24" fill="#fff" stroke="#0ac" strokeWidth="2.5" rx="4" />
+              </svg>
+            </span>
+            <h1 className="custom-title">Multi-Track Window Calculator</h1>
+          </div>
+          <div className="custom-header-desc">
+            Advanced cost calculation for multiple windows & track configurations
+          </div>
+        </div>
+      </div>
+     
       <div className="container">
         {/* Rate Configuration */}
         <div>
@@ -502,6 +541,117 @@ function App() {
             <span className="icon">⚙️</span>
             Rate Configuration
           </div>
+          <div className="profile-block">
+            <div className="profile-label">Outer Frame Profiles:</div>
+            <table className="profile-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Thickness (mm)</th>
+                  <th>Weight/ft (kg)</th>
+                  <th>Rate/kg (₹)</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {outerProfiles.map((p, idx) => (
+                  <tr key={idx}>
+                    <td>
+                      <input value={p.type} onChange={e => handleProfileChange("outer", idx, "type", e.target.value)} />
+                    </td>
+                    <td>
+                      <input type="number" value={p.thickness} onChange={e => handleProfileChange("outer", idx, "thickness", e.target.value)} step="0.01" min="0" />
+                    </td>
+                    <td>
+                      <input type="number" value={p.weight} onChange={e => handleProfileChange("outer", idx, "weight", e.target.value)} step="0.001" min="0" />
+                    </td>
+                    <td>
+                      <input type="number" value={p.rate} onChange={e => handleProfileChange("outer", idx, "rate", e.target.value)} step="1" min="0" />
+                    </td>
+                    <td>
+                      <button className="profile-delete-btn" onClick={() => handleProfileDelete("outer", idx)}>🗑️</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <button className="profile-add-btn" onClick={() => handleProfileAdd("outer")}>+ Add Outer Frame Profile</button>
+          </div>
+          {/* INNER FRAME PROFILES */}
+          <div className="profile-block">
+            <div className="profile-label">Inner Frame Profiles:</div>
+            <table className="profile-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Thickness (mm)</th>
+                  <th>Weight/ft (kg)</th>
+                  <th>Rate/kg (₹)</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {innerProfiles.map((p, idx) => (
+                  <tr key={idx}>
+                    <td>
+                      <input value={p.type} onChange={e => handleProfileChange("inner", idx, "type", e.target.value)} />
+                    </td>
+                    <td>
+                      <input type="number" value={p.thickness} onChange={e => handleProfileChange("inner", idx, "thickness", e.target.value)} step="0.01" min="0" />
+                    </td>
+                    <td>
+                      <input type="number" value={p.weight} onChange={e => handleProfileChange("inner", idx, "weight", e.target.value)} step="0.001" min="0" />
+                    </td>
+                    <td>
+                      <input type="number" value={p.rate} onChange={e => handleProfileChange("inner", idx, "rate", e.target.value)} step="1" min="0" />
+                    </td>
+                    <td>
+                      <button className="profile-delete-btn" onClick={() => handleProfileDelete("inner", idx)}>🗑️</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <button className="profile-add-btn" onClick={() => handleProfileAdd("inner")}>+ Add Inner Frame Profile</button>
+          </div>
+          {/* CLAMPING LOCK PROFILES */}
+          <div className="profile-block">
+            <div className="profile-label">Clamping Lock Profiles:</div>
+            <table className="profile-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Thickness (mm)</th>
+                  <th>Weight/ft (kg)</th>
+                  <th>Rate/kg (₹)</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {clampProfiles.map((p, idx) => (
+                  <tr key={idx}>
+                    <td>
+                      <input value={p.type} onChange={e => handleProfileChange("clamp", idx, "type", e.target.value)} />
+                    </td>
+                    <td>
+                      <input type="number" value={p.thickness} onChange={e => handleProfileChange("clamp", idx, "thickness", e.target.value)} step="0.01" min="0" />
+                    </td>
+                    <td>
+                      <input type="number" value={p.weight} onChange={e => handleProfileChange("clamp", idx, "weight", e.target.value)} step="0.001" min="0" />
+                    </td>
+                    <td>
+                      <input type="number" value={p.rate} onChange={e => handleProfileChange("clamp", idx, "rate", e.target.value)} step="1" min="0" />
+                    </td>
+                    <td>
+                      <button className="profile-delete-btn" onClick={() => handleProfileDelete("clamp", idx)}>🗑️</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <button className="profile-add-btn" onClick={() => handleProfileAdd("clamp")}>+ Add Clamping Lock Profile</button>
+          </div>
+          
           <div className="rates-grid">
             {[
               { id: "powderCoatingRate", label: "Powder Coating (₹/kg)" },
@@ -531,204 +681,6 @@ function App() {
             ))}
           </div>
         </div>
-        {/* Profiles Section */}
-        <div className="profiles-section">
-          {/* OUTER */}
-          <h2>Outer Frame Profiles:</h2>
-          <div className="profile-table-outer profile-table-anim">
-            <div className="profile-row header">
-              <div>Type</div>
-              <div>Thickness (mm)</div>
-              <div>Weight/ft (kg)</div>
-              <div>Rate/kg (₹)</div>
-              <div></div>
-            </div>
-            {outerProfiles.map((p, idx) => (
-              <div className="profile-row" key={idx}>
-                <input
-                  value={p.type}
-                  placeholder="Type"
-                  onChange={(e) =>
-                    handleProfileChange("outer", idx, "type", e.target.value)
-                  }
-                />
-                <input
-                  type="number"
-                  value={p.thickness}
-                  placeholder="Thickness"
-                  min="0"
-                  step="0.001"
-                  onChange={(e) =>
-                    handleProfileChange("outer", idx, "thickness", e.target.value)
-                  }
-                />
-                <input
-                  type="number"
-                  value={p.weight}
-                  placeholder="Weight/ft"
-                  min="0"
-                  step="0.001"
-                  onChange={(e) =>
-                    handleProfileChange("outer", idx, "weight", e.target.value)
-                  }
-                />
-                <input
-                  type="number"
-                  value={p.rate}
-                  placeholder="Rate/kg"
-                  min="0"
-                  step="0.01"
-                  onChange={(e) =>
-                    handleProfileChange("outer", idx, "rate", e.target.value)
-                  }
-                />
-                <button
-                  className="profile-delete"
-                  title="Delete"
-                  onClick={() => handleProfileDelete("outer", idx)}
-                >
-                  🗑️
-                </button>
-              </div>
-            ))}
-            <button
-              className="profile-add"
-              onClick={() => handleProfileAdd("outer")}
-            >
-              + Add Outer Frame Profile
-            </button>
-          </div>
-          {/* INNER */}
-          <h2>Inner Frame Profiles:</h2>
-          <div className="profile-table-inner profile-table-anim">
-            <div className="profile-row header">
-              <div>Type</div>
-              <div>Thickness (mm)</div>
-              <div>Weight/ft (kg)</div>
-              <div>Rate/kg (₹)</div>
-              <div></div>
-            </div>
-            {innerProfiles.map((p, idx) => (
-              <div className="profile-row" key={idx}>
-                <input
-                  value={p.type}
-                  placeholder="Type"
-                  onChange={(e) =>
-                    handleProfileChange("inner", idx, "type", e.target.value)
-                  }
-                />
-                <input
-                  type="number"
-                  value={p.thickness}
-                  placeholder="Thickness"
-                  min="0"
-                  step="0.001"
-                  onChange={(e) =>
-                    handleProfileChange("inner", idx, "thickness", e.target.value)
-                  }
-                />
-                <input
-                  type="number"
-                  value={p.weight}
-                  placeholder="Weight/ft"
-                  min="0"
-                  step="0.001"
-                  onChange={(e) =>
-                    handleProfileChange("inner", idx, "weight", e.target.value)
-                  }
-                />
-                <input
-                  type="number"
-                  value={p.rate}
-                  placeholder="Rate/kg"
-                  min="0"
-                  step="0.01"
-                  onChange={(e) =>
-                    handleProfileChange("inner", idx, "rate", e.target.value)
-                  }
-                />
-                <button
-                  className="profile-delete"
-                  title="Delete"
-                  onClick={() => handleProfileDelete("inner", idx)}
-                >
-                  🗑️
-                </button>
-              </div>
-            ))}
-            <button
-              className="profile-add"
-              onClick={() => handleProfileAdd("inner")}
-            >
-              + Add Inner Frame Profile
-            </button>
-          </div>
-          {/* CLAMPING LOCK */}
-          <h2>Clamping Lock Profiles:</h2>
-          <div className="profile-table-clamp profile-table-anim">
-            <div className="profile-row header">
-              <div>Type</div>
-              <div>Thickness (mm)</div>
-              <div>Weight/ft (kg)</div>
-              <div>Rate/kg (₹)</div>
-              <div></div>
-            </div>
-            {clampProfiles.map((p, idx) => (
-              <div className="profile-row" key={idx}>
-                <input
-                  value={p.type}
-                  placeholder="Type"
-                  onChange={(e) =>
-                    handleProfileChange("clamp", idx, "type", e.target.value)
-                  }
-                />
-                <input
-                  type="number"
-                  value={p.thickness}
-                  placeholder="Thickness"
-                  min="0"
-                  step="0.001"
-                  onChange={(e) =>
-                    handleProfileChange("clamp", idx, "thickness", e.target.value)
-                  }
-                />
-                <input
-                  type="number"
-                  value={p.weight}
-                  placeholder="Weight/ft"
-                  min="0"
-                  step="0.001"
-                  onChange={(e) =>
-                    handleProfileChange("clamp", idx, "weight", e.target.value)
-                  }
-                />
-                <input
-                  type="number"
-                  value={p.rate}
-                  placeholder="Rate/kg"
-                  min="0"
-                  step="0.01"
-                  onChange={(e) =>
-                    handleProfileChange("clamp", idx, "rate", e.target.value)
-                  }
-                />
-                <button
-                  className="profile-delete"
-                  title="Delete"
-                  onClick={() => handleProfileDelete("clamp", idx)}
-                >
-                  🗑️
-                </button>
-              </div>
-            ))}
-            <button
-              className="profile-add"
-              onClick={() => handleProfileAdd("clamp")}
-            >
-              + Add Clamping Lock Profile
-            </button>
-          </div>
-          </div>
           <div className="main-content">
             <div className="input-section">
               <div className="section-title">
@@ -745,176 +697,176 @@ function App() {
                 const clampProf = clampProfiles[win.clampProfileIdx] || clampProfiles[0];
                 return (
                   <div className="window-item animated-window" key={id}>
-                    <div className="window-header">
-                      <div className="window-title">Window {win.idx}</div>
-                      <button className="remove-window" onClick={() => handleRemoveWindow(id)}>
-                        Remove
-                      </button>
+                  <div className="window-header">
+                    <div className="window-title">Window {win.idx}</div>
+                    <button className="remove-window" onClick={() => handleRemoveWindow(id)}>
+                    Remove
+                    </button>
+                  </div>
+                  <div className="input-group">
+                    <label>Dimensions Unit</label>
+                    <div className="unit-toggle">
+                    <div
+                      className={`unit-option${win.unit === "feet" ? " active" : ""}`}
+                      onClick={() => handleUpdateWindow(id, "unit", "feet")}
+                    >
+                      Feet
                     </div>
-                    <div className="input-group">
-                      <label>Dimensions Unit</label>
-                      <div className="unit-toggle">
-                        <div
-                          className={`unit-option${win.unit === "feet" ? " active" : ""}`}
-                          onClick={() => handleUpdateWindow(id, "unit", "feet")}
-                        >
-                          Feet
-                        </div>
-                        <div
-                          className={`unit-option${win.unit === "inches" ? " active" : ""}`}
-                          onClick={() => handleUpdateWindow(id, "unit", "inches")}
-                        >
-                          Inches
-                        </div>
-                      </div>
+                    <div
+                      className={`unit-option${win.unit === "inches" ? " active" : ""}`}
+                      onClick={() => handleUpdateWindow(id, "unit", "inches")}
+                    >
+                      Inches
                     </div>
-                    <div className="input-group">
-                      <label>Width</label>
-                      <div className="dimension-input">
-                        <input
-                          type="number"
-                          className="width-input"
-                          value={win.width}
-                          min="0.1"
-                          step="0.1"
-                          onChange={(e) =>
-                            handleUpdateWindow(id, "width", Number(e.target.value))
-                          }
-                        />
-                        <div className="conversion-info">
-                          {win.unit === "inches"
-                            ? `= ${(win.width / 12).toFixed(2)} ft`
-                            : ""}
-                        </div>
-                      </div>
                     </div>
-                    <div className="input-group">
-                      <label>Height</label>
-                      <div className="dimension-input">
-                        <input
-                          type="number"
-                          className="height-input"
-                          value={win.height}
-                          min="0.1"
-                          step="0.1"
-                          onChange={(e) =>
-                            handleUpdateWindow(id, "height", Number(e.target.value))
-                          }
-                        />
-                        <div className="conversion-info">
-                          {win.unit === "inches"
-                            ? `= ${(win.height / 12).toFixed(2)} ft`
-                            : ""}
-                        </div>
-                      </div>
+                  </div>
+                  <div className="input-group">
+                    <label>Width</label>
+                    <div className="dimension-input">
+                    <input
+                      type="number"
+                      className="width-input"
+                      value={win.width}
+                      min="0.1"
+                      step="0.1"
+                      onChange={(e) =>
+                      handleUpdateWindow(id, "width", Number(e.target.value))
+                      }
+                    />
+                    <div className="conversion-info">
+                      {win.unit === "inches"
+                      ? `= ${(win.width / 12).toFixed(2)} ft`
+                      : ""}
                     </div>
-                    <div className="input-group">
-                      <label>Number of Tracks</label>
-                      <div className="track-selector">
-                        {[2, 3, 4].map((track) => (
-                          <div
-                            key={track}
-                            className={`track-option${win.tracks === track ? " active" : ""}`}
-                            onClick={() => handleUpdateWindow(id, "tracks", track)}
-                          >
-                            {track} Track
-                          </div>
-                        ))}
-                      </div>
                     </div>
-                    <div className="input-group">
-                      <label>Glass Type</label>
-                      <div className="glass-toggle">
-                        <div
-                          className={`glass-option${win.glassType === "clear" ? " active" : ""}`}
-                          onClick={() => handleUpdateWindow(id, "glassType", "clear")}
-                        >
-                          Clear Glass
-                          <br />
-                          <small>₹{rates.clearGlassRate}/ft²</small>
-                        </div>
-                        <div
-                          className={`glass-option${win.glassType === "reflective" ? " active" : ""}`}
-                          onClick={() => handleUpdateWindow(id, "glassType", "reflective")}
-                        >
-                          Reflective Glass
-                          <br />
-                          <small>₹{rates.reflectiveGlassRate}/ft²</small>
-                        </div>
-                      </div>
+                  </div>
+                  <div className="input-group">
+                    <label>Height</label>
+                    <div className="dimension-input">
+                    <input
+                      type="number"
+                      className="height-input"
+                      value={win.height}
+                      min="0.1"
+                      step="0.1"
+                      onChange={(e) =>
+                      handleUpdateWindow(id, "height", Number(e.target.value))
+                      }
+                    />
+                    <div className="conversion-info">
+                      {win.unit === "inches"
+                      ? `= ${(win.height / 12).toFixed(2)} ft`
+                      : ""}
                     </div>
-                    {/* Profile selectors */}
-                    <div className="input-group">
-                      <label>Outer Frame Profile</label>
-                      <select
-                        value={win.outerProfileIdx}
-                        onChange={(e) =>
-                          handleChangeProfile(id, "outerProfileIdx", Number(e.target.value))
-                        }
+                    </div>
+                  </div>
+                  <div className="input-group">
+                    <label>Number of Tracks</label>
+                    <div className="track-selector">
+                    {[2, 3, 4].map((track) => (
+                      <div
+                      key={track}
+                      className={`track-option${win.tracks === track ? " active" : ""}`}
+                      onClick={() => handleUpdateWindow(id, "tracks", track)}
                       >
-                        {outerProfiles.map((p, i) => (
-                          <option key={i} value={i}>
-                            {p.type
-                              ? `${p.type} | ${p.thickness}mm | ${p.weight}kg/ft | ₹${p.rate}/kg`
-                              : `Profile ${i + 1}`}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="input-group">
-                      <label>Inner Frame Profile</label>
-                      <select
-                        value={win.innerProfileIdx}
-                        onChange={(e) =>
-                          handleChangeProfile(id, "innerProfileIdx", Number(e.target.value))
-                        }
-                      >
-                        {innerProfiles.map((p, i) => (
-                          <option key={i} value={i}>
-                            {p.type
-                              ? `${p.type} | ${p.thickness}mm | ${p.weight}kg/ft | ₹${p.rate}/kg`
-                              : `Profile ${i + 1}`}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="input-group">
-                      <label>Clamping Lock Profile</label>
-                      <select
-                        value={win.clampProfileIdx}
-                        onChange={(e) =>
-                          handleChangeProfile(id, "clampProfileIdx", Number(e.target.value))
-                        }
-                      >
-                        {clampProfiles.map((p, i) => (
-                          <option key={i} value={i}>
-                            {p.type
-                              ? `${p.type} | ${p.thickness}mm | ${p.weight}kg/ft | ₹${p.rate}/kg`
-                              : `Profile ${i + 1}`}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="weight-summary">
-                      <div className="summary-item">
-                        <span>Area:</span>
-                        <span className="window-area">
-                          {win._summary.area.toFixed(2)} ft²
-                        </span>
+                      {track} Track
                       </div>
-                      <div className="summary-item">
-                        <span>Total Weight:</span>
-                        <span className="window-weight">
-                          {win._summary.totalWeight.toFixed(2)} kg
-                        </span>
-                      </div>
-                      <div className="summary-item">
-                        <span>Window Cost:</span>
-                        <span className="window-cost">
-                          ₹{win._summary.totalCost.toFixed(2)}
-                        </span>
-                      </div>
+                    ))}
                     </div>
+                  </div>
+                  <div className="input-group">
+                    <label>Glass Type</label>
+                    <div className="glass-toggle">
+                    <div
+                      className={`glass-option${win.glassType === "clear" ? " active" : ""}`}
+                      onClick={() => handleUpdateWindow(id, "glassType", "clear")}
+                    >
+                      Clear Glass
+                      <br />
+                      <small>₹{rates.clearGlassRate}/ft²</small>
+                    </div>
+                    <div
+                      className={`glass-option${win.glassType === "reflective" ? " active" : ""}`}
+                      onClick={() => handleUpdateWindow(id, "glassType", "reflective")}
+                    >
+                      Reflective Glass
+                      <br />
+                      <small>₹{rates.reflectiveGlassRate}/ft²</small>
+                    </div>
+                    </div>
+                  </div>
+                  {/* Profile selectors */}
+                  <div className="input-group">
+                    <label>Outer Frame Profile</label>
+                    <select
+                    value={win.outerProfileIdx}
+                    onChange={(e) =>
+                      handleChangeProfile(id, "outerProfileIdx", Number(e.target.value))
+                    }
+                    >
+                    {outerProfiles.map((p, i) => (
+                      <option key={i} value={i}>
+                      {p.type
+                        ? `${p.type} | ${p.thickness}mm | ${p.weight}kg/ft | ₹${p.rate}/kg`
+                        : `Profile ${i + 1}`}
+                      </option>
+                    ))}
+                    </select>
+                  </div>
+                  <div className="input-group">
+                    <label>Inner Frame Profile</label>
+                    <select
+                    value={win.innerProfileIdx}
+                    onChange={(e) =>
+                      handleChangeProfile(id, "innerProfileIdx", Number(e.target.value))
+                    }
+                    >
+                    {innerProfiles.map((p, i) => (
+                      <option key={i} value={i}>
+                      {p.type
+                        ? `${p.type} | ${p.thickness}mm | ${p.weight}kg/ft | ₹${p.rate}/kg`
+                        : `Profile ${i + 1}`}
+                      </option>
+                    ))}
+                    </select>
+                  </div>
+                  <div className="input-group">
+                    <label>Clamping Lock Profile</label>
+                    <select
+                    value={win.clampProfileIdx}
+                    onChange={(e) =>
+                      handleChangeProfile(id, "clampProfileIdx", Number(e.target.value))
+                    }
+                    >
+                    {clampProfiles.map((p, i) => (
+                      <option key={i} value={i}>
+                      {p.type
+                        ? `${p.type} | ${p.thickness}mm | ${p.weight}kg/ft | ₹${p.rate}/kg`
+                        : `Profile ${i + 1}`}
+                      </option>
+                    ))}
+                    </select>
+                  </div>
+                  <div className="weight-summary">
+                    <div className="summary-item">
+                    <span>Area:</span>
+                    <span className="window-area">
+                      {win._summary.area.toFixed(2)} ft²
+                    </span>
+                    </div>
+                    <div className="summary-item">
+                    <span>Total Weight:</span>
+                    <span className="window-weight">
+                      {win._summary.totalWeight.toFixed(2)} kg
+                    </span>
+                    </div>
+                    <div className="summary-item">
+                    <span>Window Cost:</span>
+                    <span className="window-cost">
+                      ₹{win._summary.totalCost.toFixed(2)}
+                    </span>
+                    </div>
+                  </div>
                   </div>
                 );
               })}
