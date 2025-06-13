@@ -7,6 +7,7 @@
   --white: #fff;
   --grey: #f8f9fa;
   --border: #e9ecef;
+  --container-padding: 16px;
   --shadow: 0 4px 24px #0001;
   --radius: 16px;
   --radius-s: 10px;
@@ -176,12 +177,12 @@ body,
   color: #1b263b;
 }
 .container {
-  max-width: 1380px;
+  max-width: 1460px;
   margin: 2.2rem auto 0 auto;
   background: var(--white);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 0;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  padding: var(--container-padding);
   overflow: hidden;
 }
 .main-content {
