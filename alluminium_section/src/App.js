@@ -84,22 +84,6 @@ function calculateWindowCost(
     totalCost,
   };
 }
-// function AppWrapper() {
-//   const [user, setUser] = useState(null);
-//   const [emailForOtp, setEmailForOtp] = useState("");
-//   const [otpSent, setOtpSent] = useState(false);
-
-//   if (!user) {
-//     if (!otpSent) {
-//       return <OtpLogin onOtpSent={(email) => {
-//         setEmailForOtp(email);
-//         setOtpSent(true);
-//       }} />;
-//     } else {
-//       return <VerifyOtp email={emailForOtp} onSuccess={(userData) => setUser(userData)} />;
-//     }
-//   }
-// }
 
 function App() {
   // Profile state
@@ -110,25 +94,37 @@ function App() {
   const [windows, setWindows] = useState({});
   const [windowCounter, setWindowCounter] = useState(1);
 
-  // --- Auth state and logic ---
-  const [user, setUser] = useState(null);
-  const [showAuth, setShowAuth] = useState(false);
+  // SIMPLIFIED AUTH STATE - Remove duplicates
+  const [userVerified, setUserVerified] = useState(false);
+  const [email, setEmail] = useState("");
 
+  // Check localStorage on first load
   useEffect(() => {
-    const stored = localStorage.getItem("windowcalc_user");
-    if (stored && stored !== "undefined") setUser(JSON.parse(stored));
-    else setShowAuth(true);
+    const isVerified = localStorage.getItem("userVerified") === "true";
+    const savedEmail = localStorage.getItem("userEmail");
+    if (isVerified && savedEmail) {
+      setUserVerified(true);
+      setEmail(savedEmail);
+    }
   }, []);
 
-  function handleAuthSuccess(userObj) {
-    setUser(userObj);
-    setShowAuth(false);
-  }
-  function handleLogout() {
-    localStorage.removeItem("windowcalc_user");
-    setUser(null);
-    setShowAuth(true);
-  }
+  // SIMPLIFIED AUTH HANDLERS
+  const handleOtpSent = (emailFromForm) => {
+    setEmail(emailFromForm);
+  };
+
+  const handleOtpVerified = () => {
+    localStorage.setItem("userVerified", "true");
+    localStorage.setItem("userEmail", email);
+    setUserVerified(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("userVerified");
+    localStorage.removeItem("userEmail");
+    setUserVerified(false);
+    setEmail("");
+  };
 
   // --- Profile logic ---
   function handleProfileChange(type, idx, field, value) {
@@ -284,6 +280,23 @@ function App() {
     // eslint-disable-next-line
   }, []);
 
+  // SINGLE AUTH CHECK - Only render auth if not verified
+  if (!userVerified) {
+    return (
+      <div className="auth-container">
+        {!email ? (
+          <OtpLogin onOtpSent={handleOtpSent} />
+        ) : (
+          <VerifyOtp
+            email={email}
+            onSuccess={handleOtpVerified}
+            onBack={() => setEmail("")}
+          />
+        )}
+      </div>
+    );
+  }
+
   return (
     <div>
       <nav className="navbar">
@@ -308,26 +321,23 @@ function App() {
           &#9776;
         </span>
       </nav>
-      {showAuth && <AuthForm onAuthSuccess={handleAuthSuccess} />}
       <div className="custom-header-bg">
         <div className="custom-header-content">
           <div className="custom-header-toprow">
-            {user && (
-              <div className="custom-user-bar">
-                <div className="custom-user-avatar">
-                  {(user.email && user.email[0].toUpperCase()) || "U"}
-                </div>
-                <div className="custom-user-info">
-                  <div className="custom-user-name">
-                    {user.email.split("@")[0]}
-                  </div>
-                  <div className="custom-user-email">{user.email}</div>
-                </div>
-                <button className="custom-logout-btn" onClick={handleLogout}>
-                  Logout
-                </button>
+            <div className="custom-user-bar">
+              <div className="custom-user-avatar">
+                {email && email[0].toUpperCase()}
               </div>
-            )}
+              <div className="custom-user-info">
+                <div className="custom-user-name">
+                  {email.split("@")[0]}
+                </div>
+                <div className="custom-user-email">{email}</div>
+              </div>
+              <button className="custom-logout-btn" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
           </div>
           <div className="custom-header-main">
             <span className="custom-logo-svg">

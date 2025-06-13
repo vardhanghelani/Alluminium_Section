@@ -1,36 +1,39 @@
-import React, { useState } from "react";
 import axios from "axios";
+import React, { useState } from "react";
 
-function OtpLogin({ onOtpSent }) {
+const OtpLogin = ({ onOtpSent }) => {
   const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
 
   const handleSendOtp = async () => {
+    if (!email) return alert("Please enter your email");
+
     try {
-      const res = await axios.post("https://your-backend.com/send-otp", { email });
-      if (res.data.success) {
-        onOtpSent(email);
+      const res = await axios.post("http://localhost:5000/api/request-otp", { email });
+
+      if (res.status === 200 && res.data.message?.toLowerCase().includes("otp sent")) {
+        alert("OTP sent successfully to your email.");
+        onOtpSent(email); // or redirect to VerifyOtp
       } else {
-        setError("Failed to send OTP.");
+        alert(res.data.message || "Failed to send OTP");
       }
     } catch (err) {
-      setError("Server error while sending OTP.");
+      console.error("Send OTP error:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Failed to send OTP.");
     }
   };
 
   return (
-    <div className="otp-login">
-      <h2>Login via OTP</h2>
+    <div>
+      <h2>OTP Login</h2>
       <input
         type="email"
-        placeholder="Enter your Email"
+        placeholder="Enter email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <button onClick={handleSendOtp}>Send OTP</button>
-      {error && <p className="error">{error}</p>}
     </div>
   );
-}
+};
 
 export default OtpLogin;
