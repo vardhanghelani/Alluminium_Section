@@ -65,7 +65,7 @@ const VerifyOtp = ({ email, onSuccess, onBack }) => {
       console.log("🔄 Sending verification request...");
       console.log("Request data:", { email, otp: otpString });
       
-      const response = await axios.post("https://alluminium-section.onrender.com/api/verify-otp", {
+      const response = await axios.post("https://alluminium-section-1.onrender.com/api/verify-otp", {
         email,
         otp: otpString,
       });

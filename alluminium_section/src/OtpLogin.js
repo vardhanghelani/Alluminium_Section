@@ -21,7 +21,7 @@ const OtpLogin = ({ onOtpSent }) => {
     setLoading(true);
 
     try {
-      const res = await axios.post("https://alluminium-section.onrender.com/api/request-otp", { email });
+      const res = await axios.post("https://alluminium-section-1.onrender.com/api/request-otp", { email });
 
       if (res.status === 200 && res.data.message?.toLowerCase().includes("otp sent")) {
         onOtpSent(email);
