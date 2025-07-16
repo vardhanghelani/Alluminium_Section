@@ -11,7 +11,7 @@ const sendOTP = require('./utils/sendOTP');
 
 const app = express();
 app.use(cors({
-  origin:'http://rajwindow.vercel.app', // Allow all origins by default
+  origin:'https://rajwindow.vercel.app', // Allow all origins by default
 }));
 app.use(express.json());
 
