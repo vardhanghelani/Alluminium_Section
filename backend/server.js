@@ -10,7 +10,9 @@ const User = require('./models/User');
 const sendOTP = require('./utils/sendOTP');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin:'http://rajwindow.vercel.app', // Allow all origins by default
+}));
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI)
